@@ -1,0 +1,27 @@
+const vm=require('vm'),fs=require('fs'),assert=require('node:assert/strict');
+const storage={};
+function app(){const fields={};const c={console,localStorage:{getItem(k){return storage[k]||null;},setItem(k,v){storage[k]=v;}},document:{addEventListener(){},getElementById(id){return fields[id]||null;}},window:{},setTimeout(){},clearTimeout(){}};vm.createContext(c);for(const f of ['core','member-portal','issuer-portal','ops-portal','portal-review']){let s=fs.readFileSync('frontend/js/'+f+'.js','utf8');if(f==='core')s=s.split('// start app')[0];vm.runInContext(s,c);}const T=c.TB;T.utils.toast=()=>{};T.router.render=()=>{};T.ui.closeModal=()=>{};T.ui.modal=()=>{};T.utils.nowET=()=> '2026-11-16 12:00:00';return {T,fields};}
+let checks=0;function check(v){assert(v);checks++;}const {T,fields}=app();function login(name){T.state.user=T.data.users.find(x=>x.name===name);assert(T.state.user);T.state.portal=T.state.user.portal;}
+check(!T.router.routes.issuer['/reconciliation']);check(!T.router.routes.issuer['/quotes']);for(const p of ['issuer','group'])for(const r of ['/review-center','/approvals/flows','/accounts'])check(!!T.router.routes[p][r]);
+login('James Wilson');check(T.pages.issuer.flowByType('issuance')===undefined);check(T.pages.issuer.flowById('AF-BANK').portal==='issuer');
+let row={id:'TEST-001',status:'approving',name:'Test',faceTotal:1000};T.data.series.push(row);T.productReview.submit(row);let task=T.data.approvalTasks.find(x=>x.ref===row.id);check(row.faceAvailable===1000);check(row.reviewStage==='group');
+T.productReview.decide(row.id,true);check(row.reviewStage==='group');
+login('Admin User');T.productReview.decide(row.id,true);check(row.reviewStage==='group');
+login('Daniel Park');check(!T.pages.issuer.flowById('AF-BANK'));check(T.pages.issuer.flowById('AF-ISSU').portal==='group');
+T.pages.issuer.confirmDecide(task.id,'approved');check(task.nodeOrder===2);check(row.reviewStage==='group');T.pages.issuer.confirmDecide(task.id,'approved');check(task.nodeOrder===2);
+login('Victor Reyes');T.pages.issuer.confirmDecide(task.id,'approved');check(task.nodeOrder===3);login('Grace Liu');T.pages.issuer.confirmDecide(task.id,'approved');check(task.status==='approved');check(row.reviewStage==='it');check(row.status==='approving');
+T.productReview.decide(row.id,true);check(row.reviewStage==='it');login('Admin User');T.productReview.decide(row.id,true);check(row.status==='open');check(row.reviewStage==='listed');let n=row.reviewHistory.length;T.productReview.decide(row.id,true);check(row.reviewHistory.length===n);
+login('James Wilson');row.status='draft';T.productReview.submit(row);row.status='approving';login('Daniel Park');fields.decide_remarks={value:'Missing evidence'};T.pages.issuer.confirmDecide(task.id,'returned');check(row.status==='draft');check(row.returnReason==='Missing evidence');check(row.reviewStage===null);
+login('James Wilson');T.productReview.submit(row);row.status='approving';check(task.nodeOrder===1);check(task.status==='pending');check(row.reviewStage==='group');
+login('Grace Liu');let before=T.pages.issuer._issuance;T.pages.issuer.openIssuance(row.id);check(T.pages.issuer._issuance===before);
+for(const lang of ['zh','en']){T.state.lang=lang;for(const portal of ['issuer','group','ops']){T.state.portal=portal;for(const r of portal==='issuer'?['/dashboard','/series','/review-center','/approvals/flows']:portal==='group'?['/dashboard','/product-review','/review-center','/approvals/flows']:['/series-review']){const html=T.router.routes[portal][r]({});check(typeof html==='string'&&!html.includes('undefined'));}}}
+console.log(`${checks} workflow, permission, return/resubmit and bilingual render checks passed`);
+// Complete real creation/submit path, including validation and inventory.
+login('James Wilson');T.pages.issuer.renderIssuanceDrawer=()=>{};T.pages.issuer.openIssuance();let st=T.pages.issuer._issuance;st.data={productName:'New Treasury',faceTotal:'5000',maturityDate:'2027-10-10',sellerYield:'0.05',refYield:'0.04',markPrice:'0.99',cusip:'TESTCUSIP',isin:'TESTISIN',agree:true};st.riskFiles=[{name:'risk.pdf'}];let count=T.data.series.length;T.pages.issuer.submitIssuance();let created=T.data.series.find(s=>s.id===st.id);check(T.data.series.length===count+1);check(created.status==='approving');check(created.reviewStage==='group');check(created.faceAvailable===5000);check(T.data.approvalTasks.some(x=>x.ref===created.id&&x.flow==='AF-ISSU'));
+login('Review Manager');check(T.productReview.canReview('it'));T.productReview.decide(created.id,true);check(created.reviewStage==='group');
+login('James Wilson');T.pages.issuer.openIssuance();st=T.pages.issuer._issuance;st.data={faceTotal:'-2',markPrice:'1',maturityDate:'2027-01-01',agree:true};count=T.data.series.length;T.pages.issuer.submitIssuance();check(T.data.series.length===count);
+console.log(`Total: ${checks} checks passed`);
+
+const restored=app().T;check(restored.data.series.some(s=>s.id===created.id&&s.reviewStage==='group'));check(restored.data.approvalFlows.find(f=>f.id==='AF-BANK').portal==='issuer');
+login('Daniel Park');const account=T.data.accounts.find(a=>a.email===T.state.user.email);account.perms=[];check(!T.productReview.canReview('group'));account.perms=['review.handle'];check(T.productReview.canReview('group'));account.status='deactivated';check(!T.productReview.canReview('group'));
+console.log(`Final: ${checks} checks passed`);
