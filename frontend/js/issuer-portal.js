@@ -824,6 +824,7 @@ TB.pages.issuer.reviewItems = function(){
     });
   });
   TB.data.issuerTasks.forEach(function(x){
+    if(TB.state.portal === 'issuer' && x.route === '#/reconciliation') return;
     var label = TB.i18n['st.' + x.status] ? TB.t('st.' + x.status) : TB.utils.enumLabel(x.status);
     items.push({ id:x.id, source:t('业务待办','Business Task'), type:TB.text(x.type), desc:TB.text(x.desc), status:x.status, statusLabel:label, statusTone:bizTone[x.status] || 'default', handler:typeof x.handler === 'object' ? TB.text(x.handler) : x.handler, time:x.time, route:x.route, mine:false, taskId:null });
   });
@@ -1460,7 +1461,7 @@ TB.pages.issuer._issuerDashboard = function(){
     '/accounts/:accountId/permissions': IR['/accounts/:accountId/permissions'],
     '/notifications': IR['/notifications']
   };
-  ['/positions','/quotes','/burn','/emt'].forEach(function(k){ delete IR[k]; });
+  ['/positions','/quotes','/burn','/emt','/reconciliation'].forEach(function(k){ delete IR[k]; });
   TB.router.register('group', groupRoutes);
   TB.router.routes.issuer['/dashboard'] = TB.pages.issuer._issuerDashboard;
   TB.pages.group.afterRender = TB.pages.issuer.afterRender;

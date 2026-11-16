@@ -522,6 +522,13 @@ TB.data.roles = {
 };
 TB.data.permCatalog.group = TB.data.permCatalog.issuer;
 TB.data.roles.group = TB.data.roles.issuer;
+// Bank does not expose reconciliation permissions; retain Group's catalog.
+TB.data.permCatalog.issuer = TB.data.permCatalog.issuer.map(function(section){
+  return Object.assign({}, section, {items:section.items.filter(function(item){ return item.key.indexOf('recon.') !== 0; })});
+});
+TB.data.roles.issuer = TB.data.roles.issuer.map(function(role){
+  return Object.assign({}, role, {perms:Array.isArray(role.perms) ? role.perms.filter(function(key){ return key.indexOf('recon.') !== 0; }) : role.perms});
+});
 TB.utils.allPermKeys = function(portal){
   var keys = [];
   (TB.data.permCatalog[portal] || []).forEach(function(g){ g.items.forEach(function(i){ keys.push(i.key); }); });
@@ -582,7 +589,6 @@ TB.nav = {
       { label:'nav.approvalConfig', icon:'settings', route:'#/approvals/flows' },
     ]},
     { group:null, items:[
-      { label:'nav.reconciliation', icon:'reconcile', route:'#/reconciliation' },
       { label:'nav.issuerAccounts', icon:'account', route:'#/accounts' },
       { label:'nav.issuerNotif', icon:'notification', route:'#/notifications' },
     ]},
