@@ -108,6 +108,7 @@
   TB.data.permCatalog.issuer=TB.data.permCatalog.issuer.map(function(g){return Object.assign({},g,{items:g.items.filter(function(i){return /^(series\.|review\.|accounts\.|notif\.)/.test(i.key);})});}).filter(function(g){return g.items.length;});
   TB.data.roles.issuer=TB.data.roles.issuer.map(function(r){return Object.assign({},r,{perms:r.perms==='all'?'all':r.perms.filter(function(k){return TB.utils.allPermKeys('issuer').indexOf(k)>=0;})});});
   TB.data.permCatalog.group=TB.data.permCatalog.group.map(function(g){return Object.assign({},g,{items:g.items.filter(function(i){return i.key!=='series.issue';})});});
+  TB.data.roles.group=TB.data.roles.group.map(function(r){if(r.perms==='all')return r;var perms=r.perms.filter(function(k){return k!=='series.issue';});if(r.id==='Officer' && perms.indexOf('review.handle')<0)perms.push('review.handle');return Object.assign({},r,{perms:perms});});
   // The review stage is visible in every product status table.
 
   TB.productReview.stageLabel=function(s){return s.status==='approving' ? (s.reviewStage==='it'?t('待 TokenBank IT 审核','Awaiting TokenBank IT Review'):t('待 Bison Group 产品审核','Awaiting Bison Group Review')) : TB.t('st.'+s.status);};
