@@ -684,7 +684,7 @@ TB.router.register('member', {
   },
   '/accounts': function(){
     var html = TB.utils.contentHeader(TB.pages.member.t('子账号列表','Sub-Accounts'), '<button class="btn btn-primary" onclick="TB.pages.member.openCreateAccount()">'+TB.t('create')+'</button>');
-    html += TB.ui.filterBar({ fields:[{name:'status',label:TB.t('status'),type:'select',options:[{value:'',label:TB.t('all')},{value:'active',label:TB.utils.enumLabel('active')},{value:'suspended',label:TB.utils.enumLabel('suspended')}]},{name:'role',label:TB.t('lbl.role'),type:'select',options:[{value:'',label:TB.t('all')},{value:'Admin',label:'Admin'},{value:'Trader',label:'Trader'}]},{name:'keyword',label:TB.pages.member.t('关键词','Keyword'),type:'text'}], exportBtn:true });
+    html += TB.ui.filterBar({ fields:[{name:'status',label:TB.t('status'),type:'select',options:[{value:'',label:TB.t('all')},{value:'active',label:TB.utils.enumLabel('active')},{value:'suspended',label:TB.utils.enumLabel('suspended')}]},{name:'role',label:TB.t('lbl.role'),type:'select',options:[{value:'',label:TB.t('all')},{value:'Admin',label:'Admin'},{value:'RWA Trader',label:'RWA Trader'},{value:'FX Trader',label:'FX Trader'}]},{name:'keyword',label:TB.pages.member.t('关键词','Keyword'),type:'text'}], exportBtn:true });
     html += TB.ui.table({ columns:[{label:TB.pages.member.t('账号名','Account'),key:'name'},{label:TB.t('lbl.email'),key:'email'},{label:TB.t('lbl.role'),key:'role'},{label:TB.t('status'),key:'status'},{label:TB.t('created'),key:'created'},{label:TB.t('lastLogin'),key:'lastLogin'},{label:TB.t('actions'),key:'go',render:function(r){
       var off = r.raw === 'deactivated';
       return '<span class="tag-link" onclick="TB.pages.member.editAccount(\''+r.id+'\')">'+TB.t('edit')+'</span> '
@@ -696,7 +696,7 @@ TB.router.register('member', {
   },
   '/accounts/:accountId/edit': function(p){
     var a = TB.pages.member._accountById(p.accountId);
-    return TB.utils.contentHeader(TB.pages.member.t('编辑子账号','Edit Sub-account'), '<button class="btn btn-primary" onclick="TB.ui.confirmModal(\''+TB.t('save')+'\',\''+TB.t('msg.confirmSubmit')+'\',\'TB.utils.toast(\\\''+TB.t('msg.saveSuccess')+'\\\',\\\'success\\\')\')">'+TB.t('save')+'</button><button class="btn" onclick="TB.utils.toast(\''+TB.t('msg.operationSuccess')+'\',\'success\')">'+TB.t('resetPwd')+'</button>') + TB.ui.card(TB.pages.member.t('基本信息','Basic Info'), TB.ui.formField({label:TB.t('lbl.email'),name:'edit_email',type:'text',value:a.email}) + TB.ui.formField({label:TB.pages.member.t('手机号','Phone'),name:'edit_phone',type:'text',value:'+65 8888 8888'}) + TB.ui.formField({label:TB.t('lbl.role'),name:'edit_role',type:'select',options:[{value:'Admin',label:'Admin',selected:a.role==='Admin'},{value:'Trader',label:'Trader',selected:a.role==='Trader'},{value:'Viewer',label:'Viewer',selected:a.role==='Viewer'}]}));
+    return TB.utils.contentHeader(TB.pages.member.t('编辑子账号','Edit Sub-account'), '<button class="btn btn-primary" onclick="TB.ui.confirmModal(\''+TB.t('save')+'\',\''+TB.t('msg.confirmSubmit')+'\',\'TB.utils.toast(\\\''+TB.t('msg.saveSuccess')+'\\\',\\\'success\\\')\')">'+TB.t('save')+'</button><button class="btn" onclick="TB.utils.toast(\''+TB.t('msg.operationSuccess')+'\',\'success\')">'+TB.t('resetPwd')+'</button>') + TB.ui.card(TB.pages.member.t('基本信息','Basic Info'), TB.ui.formField({label:TB.t('lbl.email'),name:'edit_email',type:'text',value:a.email}) + TB.ui.formField({label:TB.pages.member.t('手机号','Phone'),name:'edit_phone',type:'text',value:'+65 8888 8888'}) + TB.ui.formField({label:TB.t('lbl.role'),name:'edit_role',type:'select',options:[{value:'Admin',label:'Admin',selected:a.role==='Admin'},{value:'RWA Trader',label:'RWA Trader',selected:a.role==='RWA Trader'},{value:'FX Trader',label:'FX Trader',selected:a.role==='FX Trader'}]}));
   },
   '/accounts/:accountId/permissions': function(p){
     var a = TB.pages.member._accountById(p.accountId);
@@ -810,7 +810,7 @@ TB.pages.member.openCreateAccount = function(){
   var t = TB.pages.member.t;
   var body = TB.ui.formField({label:t('账号名','Account Name'), name:'new_name', type:'text', required:true})
     + TB.ui.formField({label:TB.t('lbl.email'), name:'new_email', type:'text', required:true})
-    + TB.ui.formField({label:TB.t('lbl.role'), name:'new_role', type:'select', options:TB.data.roles.member.map(function(r){ return {value:r.id, label:TB.text(r.name), selected:r.id === 'Viewer'}; })});
+    + TB.ui.formField({label:TB.t('lbl.role'), name:'new_role', type:'select', options:TB.data.roles.member.map(function(r){ return {value:r.id, label:TB.text(r.name), selected:r.id === 'RWA Trader'}; })});
   TB.ui.modal({
     title:t('创建子账号','Create Sub-account'),
     body:body,
@@ -824,7 +824,7 @@ TB.pages.member.saveNewAccount = function(){
   if(!name){ TB.utils.toast(t('请填写账号名','Account name is required'), 'error'); return; }
   if(!email || email.indexOf('@') < 0){ TB.utils.toast(t('请填写有效邮箱','Please enter a valid email'), 'error'); return; }
   if(TB.data.accounts.some(function(a){ return a.email === email; })){ TB.utils.toast(t('该邮箱已存在账号','An account with this email already exists'), 'error'); return; }
-  var role = TB.utils.getInputVal('new_role') || 'Viewer';
+  var role = TB.utils.getInputVal('new_role') || 'RWA Trader';
   TB.data.accounts.push({ id:TB.pages.member._nextAccountId(), name:name, email:email, role:role, org:TB.state.user ? TB.state.user.org : 'Alpha Fund Management', status:'active', created:TB.utils.nowET().slice(0, 10), lastLogin:'-' });
   TB.ui.closeModal();
   TB.utils.toast(t('账号已创建','Account created'), 'success');

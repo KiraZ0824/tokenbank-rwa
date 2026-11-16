@@ -305,8 +305,8 @@ TB.data = {
   ],
   accounts: [
     {id:'ACC-001',name:'John Smith',email:'john@alpha-fund.com',role:'Admin',org:'Alpha Fund Management',status:'active',created:'2026-08-15',lastLogin:'2026-11-02 08:00:00'},
-    {id:'ACC-002',name:'Sarah Lee',email:'sarah@alpha-fund.com',role:'Trader',org:'Alpha Fund Management',status:'active',created:'2026-08-16',lastLogin:'2026-11-01 14:00:00'},
-    {id:'ACC-003',name:'Mike Chen',email:'mike@alpha-fund.com',role:'Viewer',org:'Alpha Fund Management',status:'suspended',created:'2026-09-01',lastLogin:'2026-10-15 09:00:00'},
+    {id:'ACC-002',name:'Sarah Lee',email:'sarah@alpha-fund.com',role:'RWA Trader',org:'Alpha Fund Management',status:'active',created:'2026-08-16',lastLogin:'2026-11-01 14:00:00'},
+    {id:'ACC-003',name:'Mike Chen',email:'mike@alpha-fund.com',role:'FX Trader',org:'Alpha Fund Management',status:'suspended',created:'2026-09-01',lastLogin:'2026-10-15 09:00:00'},
     {id:'ACC-004',name:'James Wilson',email:'jwilson@bisonbank.com',role:'Admin',org:'Bison Bank',status:'active',created:'2026-06-01',lastLogin:'2026-11-02 07:30:00'},
     {id:'ACC-005',name:'Maria Garcia',email:'mgarcia@bisonbank.com',role:'Officer',org:'Bison Bank',status:'active',created:'2026-06-05',lastLogin:'2026-11-01 16:00:00'},
     {id:'ACC-006',name:'Admin User',email:'admin@tokenbank.io',role:'Sys Admin',org:'TokenBank',status:'active',created:'2026-01-01',lastLogin:'2026-11-02 08:30:00'},
@@ -315,7 +315,7 @@ TB.data = {
     {id:'ACC-009',name:'Robert Taylor',email:'rtaylor@bisonbank.com',role:'Compliance',org:'Bison Bank',status:'active',created:'2026-07-01',lastLogin:'2026-11-01 09:00:00'},
     {id:'ACC-010',name:'Linda Chen',email:'lchen@bisonbank.com',role:'Treasury',org:'Bison Bank',status:'active',created:'2026-08-01',lastLogin:'2026-11-02 08:45:00'},
     {id:'ACC-011',name:'Anna Wong',email:'anna@beta-cap.com',role:'Admin',org:'Beta Capital Partners',status:'active',created:'2026-08-22',lastLogin:'2026-11-02 09:00:00'},
-    {id:'ACC-012',name:'Leo Zhang',email:'leo@beta-cap.com',role:'Trader',org:'Beta Capital Partners',status:'active',created:'2026-09-05',lastLogin:'2026-11-01 10:30:00'},
+    {id:'ACC-012',name:'Leo Zhang',email:'leo@beta-cap.com',role:'RWA Trader',org:'Beta Capital Partners',status:'active',created:'2026-09-05',lastLogin:'2026-11-01 10:30:00'},
     {id:'ACC-013',name:'Nina Keller',email:'nina@gamma-wealth.ch',role:'Admin',org:'Gamma Wealth Advisory',status:'active',created:'2026-09-10',lastLogin:'2026-10-30 15:00:00'},
     {id:'ACC-014',name:'Omar Haddad',email:'omar@delta-am.co.uk',role:'Admin',org:'Delta Asset Management',status:'active',created:'2026-10-28',lastLogin:'-'},
     {id:'ACC-015',name:'Ken Sato',email:'ken@epsilon-inv.jp',role:'Admin',org:'Epsilon Investments',status:'active',created:'2026-07-12',lastLogin:'2026-11-02 10:20:00'},
@@ -509,8 +509,8 @@ TB.data.platformRoles = [
 TB.data.roles = {
   member: [
     {id:'Admin', name:{zh:'管理员',en:'Admin'}, perms:'all'},
-    {id:'Trader', name:{zh:'交易员',en:'Trader'}, perms:['market.view','market.buy','market.book','holdings.view','wallet.view','wallet.deposit','notif.manage']},
-    {id:'Viewer', name:{zh:'只读',en:'Viewer'}, perms:['market.view','holdings.view','wallet.view']},
+    {id:'RWA Trader', name:{zh:'RWA Trader',en:'RWA Trader'}, perms:['market.view','market.buy','market.book','holdings.view','wallet.view','wallet.deposit','notif.manage']},
+    {id:'FX Trader', name:{zh:'FX Trader',en:'FX Trader'}, perms:['wallet.view']},
   ],
   issuer: [
     {id:'Admin', name:{zh:'管理员',en:'Admin'}, perms:'all'},
