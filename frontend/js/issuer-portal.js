@@ -1460,9 +1460,9 @@ TB.pages.issuer._issuerDashboard = function(){
     '/accounts/:accountId/permissions': IR['/accounts/:accountId/permissions'],
     '/notifications': IR['/notifications']
   };
-  ['/positions','/quotes','/burn','/emt','/review-center','/approvals/flows'].forEach(function(k){ delete IR[k]; });
+  ['/positions','/quotes','/burn','/emt'].forEach(function(k){ delete IR[k]; });
   TB.router.register('group', groupRoutes);
   TB.router.routes.issuer['/dashboard'] = TB.pages.issuer._issuerDashboard;
   TB.pages.group.afterRender = TB.pages.issuer.afterRender;
-  delete TB.pages.issuer.afterRender;
+
 })();

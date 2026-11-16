@@ -50,6 +50,7 @@ TB.i18n = {
   'nav.accounts':{en:'Accounts',zh:'账号管理'},'nav.notifications':{en:'Notifications',zh:'通知中心'},
   'nav.compliance':{en:'Compliance',zh:'合规与安全'},'nav.settings':{en:'Settings',zh:'个人设置'},
   'nav.transactions':{en:'Transactions',zh:'交易记录'},'nav.bookAheadList':{en:'Bookings',zh:'预定管理'},
+  'nav.productReview':{en:'Product Review',zh:'发行产品审核'},
   // issuer nav
   'nav.series':{en:'Series Issuance',zh:'Series发行管理'},
   'nav.quotes':{en:'Quotes',zh:'报价管理'},'nav.burn':{en:'Burn',zh:'销毁管理'},
@@ -575,6 +576,12 @@ TB.nav = {
       { label:'nav.series', icon:'series', route:'#/series' },
     ]},
     { group:null, items:[
+    ]},
+    { group:'grp.reviewMgmt', items:[
+      { label:'nav.reviewCenter', icon:'queue', route:'#/review-center' },
+      { label:'nav.approvalConfig', icon:'settings', route:'#/approvals/flows' },
+    ]},
+    { group:null, items:[
       { label:'nav.reconciliation', icon:'reconcile', route:'#/reconciliation' },
       { label:'nav.issuerAccounts', icon:'account', route:'#/accounts' },
       { label:'nav.issuerNotif', icon:'notification', route:'#/notifications' },
@@ -585,6 +592,7 @@ TB.nav = {
       { label:'nav.dashboard', icon:'dashboard', route:'#/dashboard' },
     ]},
     { group:'grp.rustMgmt', items:[
+      { label:'nav.productReview', icon:'review', route:'#/product-review' },
       { label:'nav.positionMonitor', icon:'positions', route:'#/positions' },
       { label:'nav.quotes', icon:'quotes', route:'#/quotes' },
       { label:'nav.burn', icon:'burn', route:'#/burn' },
