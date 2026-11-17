@@ -557,6 +557,7 @@ TB.router.register('member', {
           {label:t('收益差','Yield Gap')+TB.utils.note(t('收益差 = 卖方收益率 − 参考市场收益率；预定时锁定该差值而非价格，故无价格风险。','Yield gap = seller yield − market reference yield; bookings lock this gap rather than the price, so there is no price risk.')), value:s.bpSpread+' bp'},
           {label:t('估值日','Valuation Date')+TB.utils.note(t('估值日为美东业务日，收盘价与估值均以当日美债收盘（17:00 ET）为基准。','Valuation date is an ET business date; the close price and valuation are struck at the US Treasury close (17:00 ET).')), value:s.valuationDate},
           {label:t('交易手续费','Transaction Fee')+TB.utils.note(t('每笔买入或预定收取 USB 20，已计入现金应付与预估定金。','USB 20 per buy or booking; included in cash payable and the estimated deposit.')), value:TB.utils.money(20) + ' / ' + t('笔','trade')},
+          {label:t('预定定金规则','Booking Deposit Rule'), value:'—'},
           {label:t('报价提供方','Quote Provider'), value:s.quoteProvider},
           {label:t('价格来源','Price Source'), value:s.priceSource},
           {label:t('报价时间','Quote Timestamp')+TB.utils.note(t('Bison 报价时间按美东时间记录并换算为本地时间展示；收盘价口径以当日美债收盘（17:00 ET）为准。','Bison quote timestamps are recorded in ET and converted to local time; close-of-day pricing follows the US Treasury close (17:00 ET).')), value:s.quoteTime},
