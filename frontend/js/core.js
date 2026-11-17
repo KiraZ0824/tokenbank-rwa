@@ -485,7 +485,6 @@ TB.data.permCatalog = {
       {key:'ops.members', label:{zh:'成员管理（机构基本信息与账号）',en:'Member management (org info & accounts)'}},
       {key:'ops.seriesReview', label:{zh:'Series审核',en:'Series review'}},
       {key:'ops.monitor', label:{zh:'产品监控',en:'Product monitoring'}},
-      {key:'ops.capacity', label:{zh:'容量/库存',en:'Capacity / inventory'}},
       {key:'ops.quotes', label:{zh:'报价监控',en:'Quote monitor'}},
     ]},
     { group:{zh:'系统管理',en:'System'}, items:[
@@ -627,7 +626,6 @@ TB.nav = {
       { label:'nav.seriesReview', icon:'review', route:'#/series-review' },
     ]},
     { group:'grp.opsMgmt', items:[
-      { label:'nav.capacity', icon:'positions', route:'#/capacity' },
       { label:'nav.quoteMonitor', icon:'quotes', route:'#/quote-monitor' },
       { label:'nav.checkoutMaturity', icon:'rotate', route:'#/product-monitor' },
     ]},

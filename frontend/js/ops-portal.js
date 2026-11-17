@@ -1663,3 +1663,6 @@ TB.ops._renderSystemParams = function(activeTab) {
 
   return html;
 };
+
+// Capacity is not a standalone operations module.
+delete TB.router.routes.ops['/capacity'];
