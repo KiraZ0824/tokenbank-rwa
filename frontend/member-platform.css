@@ -38,3 +38,11 @@
  .member-platform .market-grid .market-card{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:12px}
  .member-platform .market-grid .market-card-foot{margin-top:0}
 }
+
+/* Product specification and order panels use the same card heading. */
+.member-platform .bond-cols{align-items:stretch}
+.member-platform .bond-col-main>.card,.member-platform .bond-col-side>.trade-panel{height:100%;margin-bottom:0;border-radius:var(--radius);box-shadow:none}
+.member-platform .bond-col-side>.trade-panel{position:static}
+.member-platform .bond-cols .card-header{min-height:56px;padding:16px 20px;border-bottom:1px solid var(--border-light);align-items:center}
+.member-platform .bond-cols .card-title{font-size:15px;font-weight:600;line-height:24px;color:var(--text)}
+.member-platform .bond-cols .trade-body{padding:20px}

@@ -10,6 +10,7 @@ TB.pages = TB.pages || {};
 TB.pages.member = TB.pages.member || {};
 
 TB.pages.member.t = function(zh, en){ return TB.state.lang === 'zh' ? zh : en; };
+TB.pages.member._specCard = function(title,body){ return '<div class="card"><div class="card-header"><div class="card-title">'+title+'</div></div><div class="card-body">'+body+'</div></div>'; };
 TB.pages.member._seriesById = function(id){ return TB.data.series.find(function(s){ return s.id === id; }) || TB.data.series[0]; };
 TB.pages.member._holdingById = function(id){ return TB.data.holdings.find(function(h){ return h.id === id; }) || TB.data.holdings[0]; };
 TB.pages.member._accountById = function(id){ return TB.data.accounts.find(function(a){ return a.id === id; }) || TB.data.accounts[0]; };
@@ -434,7 +435,7 @@ TB.pages.member._tradePanel = function(s, purchasable){
   var defaultCout = TB.utils.fmtDate(new Date(new Date(today + 'T00:00:00').getTime() + s.windowDays * 86400000));
   if(s.maturityDate && defaultCout > s.maturityDate) defaultCout = s.maturityDate;
   defaultCout = TB.utils.isTradingDay(defaultCout) ? defaultCout : TB.utils.prevTradingDay(defaultCout);
-  var html = '<div class="trade-panel"><div class="trade-tabs"><div class="trade-tab active">'+t('挂单','Place Order')+'</div></div><div class="trade-body">';
+  var html = '<div class="trade-panel"><div class="card-header"><div class="card-title">'+t('挂单','Place Order')+'</div></div><div class="trade-body">';
   html += field(t('可用 EMT','Available EMT'), t('成交时从可用余额扣款。','Funds are deducted from the available balance on execution.'), TB.utils.money(emt), true);
   html += '<div class="trade-field"><div class="trade-field-label"><span>'+t('挂单价格','Bid Price')+TB.utils.note(t('自定义买入价格；旁为 Bison 参考价供参考。','Set your own bid price; the reference price beside it is Bison’s quote for guidance.'))+'</span></div>'
     + '<div class="trade-field-inline" style="font-size:13px;align-items:center;gap:10px">'
@@ -542,8 +543,7 @@ TB.router.register('member', {
       html += '<div class="bond-quote-expired">⚠️ '+t('该产品当前不可购买：报价已过期或已售罄，请等待发行方刷新报价。','This product is not purchasable now: the quote expired or the series sold out. Please wait for a refreshed quote.')+'</div>';
     }
     html += '<div class="bond-cols"><div class="bond-col-main">'
-      + '<div class="section-head">'+t('产品规格','Product Specifications')+'</div>'
-      + TB.ui.card(null, TB.ui.descList([
+      + TB.pages.member._specCard(t('产品规格','Product Specifications'), TB.ui.descList([
           {label:'CUSIP', value:s.cusip},
           {label:'ISIN', value:s.isin},
           {label:t('当前价格','Current Price')+TB.utils.note(t('该周期对应美债产品（CUSIP '+s.cusip+'）的当前参考价，估值日 '+s.valuationDate+'，来源 '+s.priceSource+'。','Current reference price of the underlying Treasury (CUSIP '+s.cusip+') for this window; valuation date '+s.valuationDate+', source '+s.priceSource+'.')), value:TB.utils.price(s.markPrice)},
