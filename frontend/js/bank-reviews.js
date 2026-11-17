@@ -22,7 +22,7 @@
   var page=TB.router.routes.issuer['/review-center'];
   TB.router.routes.issuer['/review-center']=function(){
     var options='<option value="">'+t('全部类型','All Types')+'</option>'+types.map(function(def){return '<option value="'+def.id+'"'+(TB.bankReviews.filter===def.id?' selected':'')+'>'+TB.text(def.name)+'</option>';}).join('');
-    return '<div class="filter-bar"><label for="bank-review-type">'+t('审核类型','Review Type')+'</label><select id="bank-review-type" class="form-input" style="width:240px" onchange="TB.bankReviews.setFilter(this.value)">'+options+'</select></div>'+page()+'<p class="form-hint">'+t('此处为 Bison Bank 内部审核。示例编号 DEMO 的任务用于演示审核操作，不执行真实铸币或销币；Bison Group 产品审核和 TokenBank IT 审核保持独立。','These are Bison Bank internal reviews. DEMO tasks demonstrate approval actions and do not execute real minting or burning. Bison Group product review and TokenBank IT review remain independent.')+'</p>';
+    return '<div class="filter-bar"><label for="bank-review-type">'+t('审核类型','Review Type')+'</label><select id="bank-review-type" class="form-input" style="width:240px" onchange="TB.bankReviews.setFilter(this.value)">'+options+'</select></div>'+page();
   };
   var detail=I.viewApprovalDetail;
   I.viewApprovalDetail=function(id){var task=I.taskById(id);if(!task || !I.flowById(task.flow))return;return detail(id);};
