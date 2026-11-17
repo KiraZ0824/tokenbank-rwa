@@ -338,7 +338,7 @@ TB.pages.issuer._issuanceStepBody = function(st, step){
     ? flow.nodes.map(function(n, i){
         return '<div class="flex items-center gap-2" style="padding:6px 0"><span class="badge badge-default">'+(i+1)+'</span><span>'+TB.text(n.name)+'</span><span class="text-muted">·</span><span>'+n.approvers.map(function(a){ return TB.ui.badge(a, 'info'); }).join(' ')+'</span><span class="badge badge-orange">'+TB.pages.issuer.modeLabel(n.mode)+'</span></div>';
       }).join('')
-    : TB.ui.alert('warning', t('提交后先进入 Bison Group 产品审核，通过后进入 TokenBank IT 审核；全部通过后上架。','Submission goes to Bison Group product review, then TokenBank IT review, and is listed only after both pass.'));
+    : TB.ui.alert('warning', t('提交后先进入产品审核，通过后进入 TokenBank IT 审核；产品审核权限归属待确认。','Submission goes to product review, then TokenBank IT review. Product review ownership is pending confirmation.'));
   return TB.ui.descList([
       {label:TB.t('lbl.seriesId'), value:st.id},
       {label:TB.t('lbl.productName'), value:d.productName || t('未命名产品','Untitled Product')},
@@ -1443,7 +1443,7 @@ TB.pages.issuer._issuerDashboard = function(){
     {key:'createdAt', label:t('创建/提交时间','Created / Submitted')},
     {key:'go', label:TB.t('actions'), render:function(r){ return '<span class="tag-link" onclick="TB.pages.issuer.openSeriesRow(\''+r.id+'\')">'+t('查看 / 编辑','View / Edit')+'</span>'; }}
   ], data:recent, paginate:false }));
-  html += '<div class="text-muted text-sm mt-2">'+t('产品提交后进入 Bison Group 产品审核与 TokenBank 后台 IT 审核；审核进度请关注通知中心。','After submission the product goes through Bison Group product review and TokenBank back-office IT review; track progress in Notifications.')+'</div>';
+  html += '<div class="text-muted text-sm mt-2">'+t('产品提交后进入产品审核与 TokenBank 后台 IT 审核；产品审核权限归属待确认。','After submission the product goes through product review and TokenBank IT review. Product review ownership is pending confirmation.')+'</div>';
   return html;
 };
 (function(){

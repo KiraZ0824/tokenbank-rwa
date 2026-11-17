@@ -6,9 +6,10 @@
     if(s.status === 'approving' && !s.reviewStage) s.reviewStage = 'group';
   });
   function page(stage){
-    var title = stage === 'group' ? t('发行产品审核','Issuance Product Review') : t('IT 审核','IT Review');
+    var title = stage === 'group' ? t('产品审核','Product Review') : t('IT 审核','IT Review');
     return TB.utils.contentHeader(title)
-      + '<p class="text-muted mb-3">'+t('Bison Bank 创建并提交 → Bison Group 产品审核 → TokenBank IT 审核 → 上架。退回后由 Bank 修改并重新提交。','Bison Bank submits → Bison Group reviews → TokenBank IT reviews → Listing. Returned products go back to Bank for revision.')+'</p>'
+      + (stage==='group' ? TB.ui.alert('info',t('产品审核权限归属待确认。本任务同时展示于 Bison Group 与 TokenBank 运营端，处理结果同步；不构成两次产品审核。','Product review ownership is pending confirmation. Bison Group and TokenBank Operations share the same tasks and results; these are not two separate approvals.')) : '')
+      + '<p class="text-muted mb-3">'+t('Bison Bank 创建并提交 → 产品审核 → TokenBank IT 审核 → 上架。退回后由 Bank 修改并重新提交。','Bison Bank submits → Product review → TokenBank IT reviews → Listing. Returned products go back to Bank for revision.')+'</p>'
       + TB.ui.table({columns:[
         {key:'id',label:TB.t('lbl.seriesId')}, {key:'name',label:TB.t('lbl.productName')},
         {key:'issuer',label:TB.t('lbl.issuer')},
@@ -111,7 +112,7 @@
   TB.data.roles.group=TB.data.roles.group.map(function(r){if(r.perms==='all')return r;var perms=r.perms.filter(function(k){return k!=='series.issue';});if(r.id==='Officer' && perms.indexOf('review.handle')<0)perms.push('review.handle');return Object.assign({},r,{perms:perms});});
   // The review stage is visible in every product status table.
 
-  TB.productReview.stageLabel=function(s){return s.status==='approving' ? (s.reviewStage==='it'?t('待 TokenBank IT 审核','Awaiting TokenBank IT Review'):t('待 Bison Group 产品审核','Awaiting Bison Group Review')) : TB.t('st.'+s.status);};
+  TB.productReview.stageLabel=function(s){return s.status==='approving' ? (s.reviewStage==='it'?t('待 TokenBank IT 审核','Awaiting TokenBank IT Review'):t('待产品审核','Awaiting Product Review')) : TB.t('st.'+s.status);};
   var view=TB.pages.issuer.viewSeries;
   TB.pages.issuer.viewSeries=function(id){
     var s=TB.data.series.find(function(x){return x.id===id;});
@@ -134,5 +135,7 @@
   ['decide','returnProduct'].forEach(function(key){var fn=TB.productReview[key];TB.productReview[key]=function(){var result=fn.apply(this,arguments);persist();return result;};});
   TB.router.routes.ops['/series/:id']=function(p){var s=TB.data.series.find(function(x){return x.id===p.id;});if(!s)return TB.ui.emptyState('',t('产品不存在','Product not found'));return TB.utils.contentHeader(TB.utils.esc(s.name))+TB.ui.descList([{label:t('产品编号','Product ID'),value:TB.utils.esc(s.id)},{label:t('当前状态','Current Status'),value:TB.utils.esc(TB.productReview.stageLabel(s))},{label:t('发行方','Issuer'),value:'Bison Group'},{label:t('创建代理','Creation Agent'),value:'Bison Bank'},{label:t('退回原因','Return Reason'),value:TB.utils.esc(s.returnReason||'-')}])+TB.ui.table({columns:[{key:'user',label:t('审核人','Reviewer')},{key:'decision',label:t('决定','Decision')},{key:'time',label:t('时间','Time')},{key:'remarks',label:t('意见','Remarks')}],data:s.reviewHistory||[],paginate:false});};
   TB.router.routes.group['/product-review'] = function(){return page('group');};
+  TB.router.routes.ops['/product-review'] = function(){return page('group');};
   TB.router.routes.ops['/series-review'] = function(){return page('it');};
+  TB.i18n['nav.productReview']={zh:'产品审核',en:'Product Review'};
 })();

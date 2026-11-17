@@ -623,6 +623,7 @@ TB.nav = {
       { label:'nav.members', icon:'members', route:'#/members' },
     ]},
     { group:'grp.reviewMgmt', items:[
+      { label:'nav.productReview', icon:'review', route:'#/product-review' },
       { label:'nav.seriesReview', icon:'review', route:'#/series-review' },
     ]},
     { group:'grp.opsMgmt', items:[

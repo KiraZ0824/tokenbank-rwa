@@ -25,3 +25,5 @@ console.log(`Total: ${checks} checks passed`);
 const restored=app().T;check(restored.data.series.some(s=>s.id===created.id&&s.reviewStage==='group'));check(restored.data.approvalFlows.find(f=>f.id==='AF-BANK').portal==='issuer');
 login('Daniel Park');const account=T.data.accounts.find(a=>a.email===T.state.user.email);account.perms=[];check(!T.productReview.canReview('group'));account.perms=['review.handle'];check(T.productReview.canReview('group'));account.status='deactivated';check(!T.productReview.canReview('group'));
 console.log(`Final: ${checks} checks passed`);
+
+login('Admin User');T.state.lang='zh';const shared=T.router.routes.ops['/product-review']({});check(shared.includes('权限归属待确认'));check(!shared.includes('onclick="TB.productReview.decide'));check(T.nav.ops.some(g=>g.items.some(i=>i.route==='#/product-review')));check(T.nav.ops.some(g=>g.items.some(i=>i.route==='#/series-review')));console.log('Shared product review and separate IT review entry checks passed');
