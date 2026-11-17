@@ -435,7 +435,7 @@ TB.pages.member._tradePanel = function(s, purchasable){
   if(s.maturityDate && defaultCout > s.maturityDate) defaultCout = s.maturityDate;
   defaultCout = TB.utils.isTradingDay(defaultCout) ? defaultCout : TB.utils.prevTradingDay(defaultCout);
   var html = '<div class="trade-panel"><div class="trade-tabs"><div class="trade-tab active">'+t('挂单','Place Order')+'</div></div><div class="trade-body">';
-  html += field(t('可用 EMT','Available EMT'), t('当日成交时校验可用余额；未来购买资金规则待确认。','Available balance is checked at execution; future purchase funding rules are pending.'), TB.utils.money(emt), true);
+  html += field(t('可用 EMT','Available EMT'), t('成交时从可用余额扣款。','Funds are deducted from the available balance on execution.'), TB.utils.money(emt), true);
   html += '<div class="trade-field"><div class="trade-field-label"><span>'+t('挂单价格','Bid Price')+TB.utils.note(t('自定义买入价格；旁为 Bison 参考价供参考。','Set your own bid price; the reference price beside it is Bison’s quote for guidance.'))+'</span></div>'
     + '<div class="trade-field-inline" style="font-size:13px;align-items:center;gap:10px">'
     + '<input type="number" class="form-input" id="trade_price" value="'+s.markPrice+'" style="max-width:160px">'
@@ -444,7 +444,7 @@ TB.pages.member._tradePanel = function(s, purchasable){
   html += '<div class="trade-field"><div class="trade-field-label"><span>'+t('挂单面值','Order Face Value')+TB.utils.note(t('不低于最小购买额 100,000，且为步进 10,000 的整数倍。','At least the 100,000 minimum purchase and a multiple of the 10,000 step.'))+'</span></div>'
     + '<input type="number" class="form-input" id="trade_face" value="1000000"></div>';
   html += fieldRow(
-    '<div class="trade-field"><div class="trade-field-label"><span>'+t('起息日','Value Date')+TB.utils.note(t('当天按价格偏离分流；未来购买先锁容量，资金处理待确认。','Today: route by price deviation. Future purchase: reserve capacity; funding rules pending.'))+'</span></div>'+TB.ui.datePicker({id:'trade_checkin', value:defaultCin})+'</div>',
+    '<div class="trade-field"><div class="trade-field-label"><span>'+t('起息日','Value Date')+TB.utils.note(t('选择计划购买日期。','Select the intended purchase date.'))+'</span></div>'+TB.ui.datePicker({id:'trade_checkin', value:defaultCin})+'</div>',
     '<div class="trade-field"><div class="trade-field-label"><span>'+t('赎回日期','Redemption Date')+TB.utils.note(t('可短于产品窗口持有；仅交易日可选，须晚于起息日且不超过窗口天数。','May be shorter than the product window; trading days only, after the value date and within the window.'))+'</span></div>'+TB.ui.datePicker({id:'trade_checkout', value:defaultCout})+'</div>'
   );
   html += '<div class="trade-date-err" id="trade_date_err"></div>';
@@ -557,7 +557,6 @@ TB.router.register('member', {
           {label:t('收益差','Yield Gap')+TB.utils.note(t('收益差 = 卖方收益率 − 参考市场收益率；预定时锁定该差值而非价格，故无价格风险。','Yield gap = seller yield − market reference yield; bookings lock this gap rather than the price, so there is no price risk.')), value:s.bpSpread+' bp'},
           {label:t('估值日','Valuation Date')+TB.utils.note(t('估值日为美东业务日，收盘价与估值均以当日美债收盘（17:00 ET）为基准。','Valuation date is an ET business date; the close price and valuation are struck at the US Treasury close (17:00 ET).')), value:s.valuationDate},
           {label:t('交易手续费','Transaction Fee')+TB.utils.note(t('每笔买入或预定收取 USB 20，已计入现金应付与预估定金。','USB 20 per buy or booking; included in cash payable and the estimated deposit.')), value:TB.utils.money(20) + ' / ' + t('笔','trade')},
-          {label:t('未来购买资金规则','Future Purchase Funding'), value:t('先锁容量；定金或全额扣款待确认','Reserve capacity first; deposit or full payment pending')},
           {label:t('报价提供方','Quote Provider'), value:s.quoteProvider},
           {label:t('价格来源','Price Source'), value:s.priceSource},
           {label:t('报价时间','Quote Timestamp')+TB.utils.note(t('Bison 报价时间按美东时间记录并换算为本地时间展示；收盘价口径以当日美债收盘（17:00 ET）为准。','Bison quote timestamps are recorded in ET and converted to local time; close-of-day pricing follows the US Treasury close (17:00 ET).')), value:s.quoteTime},
