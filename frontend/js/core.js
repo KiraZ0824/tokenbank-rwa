@@ -1328,12 +1328,6 @@ TB.router = {
     if(handler){
       try {
         content.innerHTML = handler(params);
-        if(TB.state.portal === 'member' && hash !== '#/dashboard' && TB.state.routeHistory.length){
-          var bar = document.createElement('div');
-          bar.className = 'member-back';
-          bar.innerHTML = '<button class="btn btn-sm" onclick="TB.utils.goBack()">‹ '+(TB.state.lang === 'zh' ? '返回' : 'Back')+'</button>';
-          content.insertBefore(bar, content.firstChild);
-        }
         if(TB.pages[portal] && TB.pages[portal].afterRender){ TB.pages[portal].afterRender(); }
       } catch(e){
         content.innerHTML = '<div class="alert alert-error">Error: '+e.message+'</div>';

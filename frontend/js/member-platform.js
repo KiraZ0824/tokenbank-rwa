@@ -29,7 +29,7 @@
       ;
   };
   R['/asset-accounts']=R['/wallet']=function(){return TB.utils.contentHeader(t('资产账户','Asset Accounts'))+summary()+accounts();};
-  R['/rwa']=function(){return '<div class="platform-context"><span>RWA / R-UST</span>'+link(t('返回平台首页','Back to Platform'),'/dashboard')+'</div>'+originalDashboard().replace(t('Dashboard','Dashboard'),t('RWA 业务总览','RWA Overview')).replace(t('钱包余额','Wallet Balance'),t('RWA 可用资金','RWA Available Cash')).replace(TB.utils.moneyShort(12500000),cash(balances[1].available));};
+  R['/rwa']=function(){return originalDashboard().replace(t('Dashboard','Dashboard'),t('RWA 业务总览','RWA Overview')).replace(t('钱包余额','Wallet Balance'),t('RWA 可用资金','RWA Available Cash')).replace(TB.utils.moneyShort(12500000),cash(balances[1].available));};
   M._quickActions=function(){return link(t('前往产品市场','Go to Product Market'),'/market',true);};
   R['/rwa/balance']=function(){return R['/asset-accounts']();};
   R['/fx']=function(){return TB.utils.contentHeader(t('FX 外汇交易','FX Foreign Exchange'))+TB.ui.emptyState('',t('FX 模块暂未开放','The FX module is not yet available'))+link(t('返回平台首页','Back to Platform'),'/dashboard');};
