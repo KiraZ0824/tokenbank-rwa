@@ -106,7 +106,7 @@ TB.pages.member._transactionRows = function(){
 
 TB.pages.member._holdingsTabs = function(activeKey){
   var current = activeKey || 'positions';
-  return TB.ui.tabs({ items:[
+  return (function(cfg){return current==='positions'?cfg.content.positions:TB.ui.tabs(cfg);})({ items:[
     {key:'positions',label:TB.pages.member.t('持仓','Positions'),active:current==='positions'},
     {key:'bookings',label:TB.pages.member.t('预定','Bookings'),active:current==='bookings'},
     {key:'transactions',label:TB.pages.member.t('交易记录','Transactions'),active:current==='transactions'}

@@ -11,7 +11,7 @@
   function updateNav(){
     var path=route(),rwa=isRwa(path);
     TB.nav.member=[{group:null,items:rwa?[
-      nav(t('返回平台','Platform Home'),'/dashboard'),nav(t('RWA 总览','RWA Overview'),'/rwa'),nav(t('产品市场','Product Market'),'/market'),nav(t('我的持仓','My Holdings'),'/holdings'),nav(t('挂单预订','Orders & Bookings'),'/bookings'),nav(t('RWA 资金','RWA Funds'),'/rwa/balance'),nav(t('通知中心','Notifications'),'/notifications')
+      nav(t('返回平台','Platform Home'),'/dashboard'),nav(t('RWA 总览','RWA Overview'),'/rwa'),nav(t('产品市场','Product Market'),'/market'),nav(t('持仓与委托','Holdings & Orders'),'/holdings'),nav(t('通知中心','Notifications'),'/notifications')
     ]:[nav(t('平台首页','Platform Home'),'/dashboard'),nav(t('资产账户','Asset Accounts'),'/asset-accounts'),nav(t('成员管理','Member Management'),'/accounts'),nav(t('账户与安全','Account & Security'),'/account-security')]}];
   }
   // Illustrative cash allocation, kept separate from R-UST holdings valuation.
@@ -31,7 +31,7 @@
   R['/asset-accounts']=R['/wallet']=function(){return TB.utils.contentHeader(t('资产账户','Asset Accounts'))+summary()+accounts();};
   R['/rwa']=function(){return '<div class="platform-context"><span>RWA / R-UST</span>'+link(t('返回平台首页','Back to Platform'),'/dashboard')+'</div>'+originalDashboard().replace(t('Dashboard','Dashboard'),t('RWA 业务总览','RWA Overview')).replace(t('钱包余额','Wallet Balance'),t('RWA 可用资金','RWA Available Cash')).replace(TB.utils.moneyShort(12500000),cash(balances[1].available));};
   M._quickActions=function(){return link(t('前往产品市场','Go to Product Market'),'/market',true);};
-  R['/rwa/balance']=function(){var a=balances[1];return TB.utils.contentHeader(t('RWA 业务资金','RWA Business Funds'),link(t('平台资产账户','Platform Asset Accounts'),'/asset-accounts'))+TB.ui.descList([{label:t('业务账户','Business Account'),value:a.id},{label:t('可用余额 · EMT','Available · EMT'),value:cash(a.available)},{label:t('冻结余额 · EMT','Frozen · EMT'),value:cash(a.frozen)}])+TB.ui.table({columns:[{key:'id',label:t('流水号','Transaction ID')},{key:'time',label:TB.t('time')},{key:'type',label:TB.t('type')},{key:'amount',label:TB.t('amount')},{key:'status',label:TB.t('status')}],data:M._transactionRows()});};
+  R['/rwa/balance']=function(){return R['/asset-accounts']();};
   R['/fx']=function(){return TB.utils.contentHeader(t('FX 外汇交易','FX Foreign Exchange'))+TB.ui.emptyState('',t('FX 模块暂未开放','The FX module is not yet available'))+link(t('返回平台首页','Back to Platform'),'/dashboard');};
   // Withdrawals always carry an explicit source account.
   R['/wallet/withdraw']=function(){return R['/asset-accounts']();};
