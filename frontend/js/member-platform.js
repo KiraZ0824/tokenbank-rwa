@@ -11,7 +11,7 @@
   function updateNav(){
     var path=route(),rwa=isRwa(path);
     TB.nav.member=[{group:null,items:rwa?[
-      nav(t('返回平台','Platform Home'),'/dashboard'),nav(t('RWA 总览','RWA Overview'),'/rwa'),nav(t('产品市场','Product Market'),'/market'),nav(t('我的持仓','My Holdings'),'/holdings'),nav(t('挂单与预定','Orders & Bookings'),'/bookings'),nav(t('挂单记录','Order Records'),'/orders'),nav(t('交易记录','Transactions'),'/transactions'),nav(t('RWA 资金','RWA Funds'),'/rwa/balance'),nav(t('通知中心','Notifications'),'/notifications')
+      nav(t('返回平台','Platform Home'),'/dashboard'),nav(t('RWA 总览','RWA Overview'),'/rwa'),nav(t('产品市场','Product Market'),'/market'),nav(t('我的持仓','My Holdings'),'/holdings'),nav(t('挂单预订','Orders & Bookings'),'/bookings'),nav(t('RWA 资金','RWA Funds'),'/rwa/balance'),nav(t('通知中心','Notifications'),'/notifications')
     ]:[nav(t('平台首页','Platform Home'),'/dashboard'),nav(t('资产账户','Asset Accounts'),'/asset-accounts'),nav(t('成员管理','Member Management'),'/accounts'),nav(t('账户与安全','Account & Security'),'/account-security')]}];
   }
   // Illustrative cash allocation, kept separate from R-UST holdings valuation.
