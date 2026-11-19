@@ -129,7 +129,7 @@ TB.pages.member._accountRows = function(){
 
 TB.pages.member._notifRows = function(){
   return TB.data.notifications.map(function(n){
-    return { id:n.id, title:n.title, desc:n.desc, time:n.time, status:TB.ui.statusBadge(n.read ? 'completed' : 'pending') };
+    return { id:n.id, title:n.title, desc:n.desc, time:n.time, read:!!n.read, status:TB.ui.statusBadge(n.read ? 'completed' : 'pending') };
   });
 };
 
@@ -704,7 +704,7 @@ TB.router.register('member', {
   },
   '/notifications': function(){
     var html = TB.utils.contentHeader(TB.pages.member.t('通知中心','Notifications'), '<button class="btn btn-primary" onclick="TB.utils.markAllRead()">'+TB.t('markAllRead')+'</button>');
-    html += TB.ui.tabs({ items:[{key:'all',label:TB.t('all'),active:true},{key:'unread',label:TB.t('unread')},{key:'read',label:TB.t('read')}], content:{ all: TB.ui.table({ columns:[{label:TB.pages.member.t('标题','Title'),key:'title'},{label:TB.t('remarks'),key:'desc'},{label:TB.t('time'),key:'time'},{label:TB.t('status'),key:'status'}], data:TB.pages.member._notifRows(), actions:[{label:TB.t('viewDetail'),onClick:'TB.utils.toast',type:'text'},{label:TB.t('delete'),onClick:'TB.utils.toast',type:'danger'}] }), unread: TB.ui.emptyState('🔔', TB.pages.member.t('暂无未读','No unread notifications')), read: TB.ui.table({ columns:[{label:TB.pages.member.t('标题','Title'),key:'title'},{label:TB.t('time'),key:'time'},{label:TB.t('status'),key:'status'}], data:TB.pages.member._notifRows().filter(function(n){return n.status.indexOf('Completed')>-1;}) }) } });
+    html += TB.ui.tabs({ items:[{key:'all',label:TB.t('all'),active:true},{key:'unread',label:TB.t('unread')},{key:'read',label:TB.t('read')}], content:{ all: TB.ui.table({ columns:[{label:TB.pages.member.t('标题','Title'),key:'title'},{label:TB.t('remarks'),key:'desc'},{label:TB.t('time'),key:'time'},{label:TB.t('status'),key:'status'}], data:TB.pages.member._notifRows(), actions:[{label:TB.t('viewDetail'),onClick:'TB.utils.toast',type:'text'},{label:TB.t('delete'),onClick:'TB.utils.toast',type:'danger'}] }), unread: TB.ui.table({columns:[{label:TB.pages.member.t('标题','Title'),key:'title'},{label:TB.t('remarks'),key:'desc'},{label:TB.t('time'),key:'time'},{label:TB.t('status'),key:'status'}],data:TB.pages.member._notifRows().filter(function(n){return !n.read;})}), read: TB.ui.table({ columns:[{label:TB.pages.member.t('标题','Title'),key:'title'},{label:TB.t('time'),key:'time'},{label:TB.t('status'),key:'status'}], data:TB.pages.member._notifRows().filter(function(n){return n.read;}) }) } });
     return html;
   },
   '/compliance': function(){
